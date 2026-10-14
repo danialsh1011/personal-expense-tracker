@@ -11,6 +11,13 @@ def show_expenses():
             print(f"Price: {expenses[i]['price']}\n")
                 
 
+def calculate_total():
+    total = 0
+    for dic in expenses:
+        total += dic['price']
+    return total
+
+
 expenses = []
 menu = """===== Personal Expense Tracker =====
 1. Add expense
@@ -27,7 +34,16 @@ while True:
         print("Add expense selected")
         category = (input("Category: "))
         description = (input("Description: "))
-        price = int(input("Price: "))
+        
+        while True:
+            try:
+                price = int(input("Price: "))
+                if price > 0:
+                    break
+                print("Price must be positive. Try again.")
+            except ValueError:
+                print("Please enter a valid number.")
+                
         dic = {"price": price,
                "category": category,
                "description": description
@@ -44,10 +60,7 @@ while True:
             print("No expenses found.\n")
         
         else:
-            total = 0
-            for dic in expenses:
-                total += dic['price']
-            print(f"The total cost is: {total}\n")
+            print(f"The total cost is: {calculate_total()}\n")
         
     elif choice == 4:
         if not expenses:
