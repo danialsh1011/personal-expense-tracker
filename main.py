@@ -1,3 +1,16 @@
+def show_expenses():
+    if not expenses:
+        print("No expenses found.")
+        
+    else:    
+        for i in range(len(expenses)):
+            print(f"Expense {i + 1}")
+            print("----------")
+            print(f"Description: {expenses[i]['description']}")
+            print(f"Category: {expenses[i]['category']}")
+            print(f"Price: {expenses[i]['price']}\n")
+                
+
 expenses = []
 menu = """===== Personal Expense Tracker =====
 1. Add expense
@@ -24,16 +37,7 @@ while True:
         print("Expense added successfully!\n")
     
     elif choice == 2:
-        if not expenses:
-            print("No expenses found.")
-        
-        else:    
-            for i in range(len(expenses)):
-                print(f"Expense {i + 1}")
-                print("----------")
-                print(f"Description: {expenses[i]['description']}")
-                print(f"Category: {expenses[i]['category']}")
-                print(f"Price: {expenses[i]['price']}\n")
+        show_expenses()
         
     elif choice == 3:
         if not expenses:
@@ -63,16 +67,8 @@ while True:
             print()
         
     elif choice == 5:
-        if not expenses:
-            print("No expenses found.")
-        
-        else:    
-            for i in range(len(expenses)):
-                print(f"Expense {i + 1}")
-                print("----------")
-                print(f"Description: {expenses[i]['description']}")
-                print(f"Category: {expenses[i]['category']}")
-                print(f"Price: {expenses[i]['price']}\n")
+        show_expenses()
+        if expenses:
             delete = int(input("Choose the expense to delete: "))
             if 1 <= delete <= len(expenses):
                 expenses.pop(delete - 1)
