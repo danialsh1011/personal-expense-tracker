@@ -18,6 +18,18 @@ def calculate_total():
     return total
 
 
+def show_expenses_by_category():
+    category_totals = {}
+    for dic in expenses:
+        if dic['category'] in category_totals:
+            category_totals[dic['category']] += dic['price']
+                            
+        else:
+            category_totals[dic['category']] = dic['price']
+    
+    return category_totals
+
+
 expenses = []
 menu = """===== Personal Expense Tracker =====
 1. Add expense
@@ -67,14 +79,7 @@ while True:
             print("No expenses found.\n")
         
         else:
-            categories = {}
-            for dic in expenses:
-                if dic['category'] in categories:
-                    categories[dic['category']] += dic['price']
-                
-                else:
-                    categories[dic['category']] = dic['price']
-                    
+            categories = show_expenses_by_category()         
             for key, value in categories.items():
                 print(f"{key}: {value}")
             print()
