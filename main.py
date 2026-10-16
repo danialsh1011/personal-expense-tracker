@@ -30,6 +30,20 @@ def show_expenses_by_category():
     return category_totals
 
 
+def delete_expense():
+    if not expenses:
+        print("No expenses found.")
+        return
+    else:
+        show_expenses()
+        delete = int(input("Choose the expense to delete: "))
+        if 1 <= delete <= len(expenses):
+            expenses.pop(delete - 1)
+            print(f"Expense {delete} deleted successfully!\n")
+        else:
+            print("Invalid number.")
+
+
 expenses = []
 menu = """===== Personal Expense Tracker =====
 1. Add expense
@@ -85,14 +99,7 @@ while True:
             print()
         
     elif choice == 5:
-        show_expenses()
-        if expenses:
-            delete = int(input("Choose the expense to delete: "))
-            if 1 <= delete <= len(expenses):
-                expenses.pop(delete - 1)
-                print(f"Expense {delete} deleted successfully!\n")
-            else:
-                print("Invalid number.")
+        delete_expense()
                 
     elif choice == 6:
         print("Goodbye!")
