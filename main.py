@@ -36,13 +36,16 @@ def delete_expense():
         return
     else:
         show_expenses()
-        delete = int(input("Choose the expense to delete: "))
-        if 1 <= delete <= len(expenses):
-            expenses.pop(delete - 1)
-            print(f"Expense {delete} deleted successfully!\n")
-        else:
-            print("Invalid number.")
-
+        try:
+            delete = int(input("Choose the expense to delete: "))
+            if 1 <= delete <= len(expenses):
+                expenses.pop(delete - 1)
+                print(f"Expense {delete} deleted successfully!\n")
+            else:
+                print("Invalid number.")
+        except ValueError:
+            print("Please enter a valid number.")
+            
 
 expenses = []
 menu = """===== Personal Expense Tracker =====
@@ -54,10 +57,13 @@ menu = """===== Personal Expense Tracker =====
 6. Exit"""
 while True:
     print(menu)
-    choice = int(input("Choose an option:"))
-
+    try:
+        choice = int(input("Choose an option:"))
+    except ValueError:
+        print("Please enter a valid number.")
+        continue
+    
     if choice == 1:
-        print("Add expense selected")
         category = (input("Category: "))
         description = (input("Description: "))
         
