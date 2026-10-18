@@ -1,3 +1,24 @@
+import json
+
+def load_expenses():
+    try:
+        with open("expenses.json", "r") as file:
+            expenses = json.load(file)
+        return expenses
+    
+    except json.decoder.JSONDecodeError:
+        return []
+    
+    except FileNotFoundError:
+        return []
+    
+
+
+def save_expenses(expenses):
+    with open("expenses.json", "w") as file:
+        json.dump(expenses, file, indent=4)
+        
+ 
 def show_expenses():
     if not expenses:
         print("No expenses found.")
@@ -40,6 +61,7 @@ def delete_expense():
             delete = int(input("Choose the expense to delete: "))
             if 1 <= delete <= len(expenses):
                 expenses.pop(delete - 1)
+                save_expenses(expenses)
                 print(f"Expense {delete} deleted successfully!\n")
             else:
                 print("Invalid number.")
@@ -47,7 +69,7 @@ def delete_expense():
             print("Please enter a valid number.")
             
 
-expenses = []
+expenses = load_expenses()
 menu = """===== Personal Expense Tracker =====
 1. Add expense
 2. Show expenses
@@ -81,6 +103,7 @@ while True:
                "description": description
                }
         expenses.append(dic)
+        save_expenses(expenses)
         
         print("Expense added successfully!\n")
     
