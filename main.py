@@ -67,8 +67,44 @@ def delete_expense():
                 print("Invalid number.")
         except ValueError:
             print("Please enter a valid number.")
-            
 
+
+def edit_expenses():
+    if not expenses:
+        print("No expenses found.")
+        return
+    else:
+        show_expenses()
+        while True:
+            try:
+                choose_expense = int(input("Choose expense: "))
+                if 1 <= choose_expense <= len(expenses):
+                    break
+                print("Invalid number (out of range)! Try again.")
+            except ValueError:
+                print("Please enter a valid number. Try again.")
+        
+        new_category = input("Category: ")         
+        new_description = input("Description: ")
+        while True:
+            try:
+                new_price = int(input("Price: "))
+                if new_price > 0:
+                    break
+                print("Price must be positive. Try again.")
+            except ValueError:
+                print("Please enter a valid number.")
+            
+        expense = expenses[choose_expense - 1]
+
+        expense['price'] = new_price
+        expense['category'] = new_category
+        expense['description'] = new_description
+
+        save_expenses(expenses)
+        print("Expense edited successfully!\n")
+        
+        
 expenses = load_expenses()
 menu = """===== Personal Expense Tracker =====
 1. Add expense
@@ -76,7 +112,8 @@ menu = """===== Personal Expense Tracker =====
 3. Show total expenses
 4. Show expenses by category
 5. Delete expense
-6. Exit"""
+6. Edit expense
+7. Exit"""
 while True:
     print(menu)
     try:
@@ -129,8 +166,11 @@ while True:
         
     elif choice == 5:
         delete_expense()
-                
+
     elif choice == 6:
+        edit_expenses()
+                        
+    elif choice == 7:
         print("Goodbye!")
         break
     
