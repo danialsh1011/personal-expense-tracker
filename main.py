@@ -1,4 +1,5 @@
 import json
+import math
 
 def load_expenses():
     try:
@@ -57,16 +58,18 @@ def delete_expense():
         return
     else:
         show_expenses()
-        try:
-            delete = int(input("Choose the expense to delete: "))
-            if 1 <= delete <= len(expenses):
-                expenses.pop(delete - 1)
-                save_expenses(expenses)
-                print(f"Expense {delete} deleted successfully!\n")
-            else:
-                print("Invalid number.")
-        except ValueError:
-            print("Please enter a valid number.")
+        while True:
+            try:
+                delete = int(input("Choose the expense to delete: "))
+                if 1 <= delete <= len(expenses):
+                    break
+                else:
+                    print("Invalid number.")
+            except ValueError:
+                print("Please enter a valid number.")
+        expenses.pop(delete - 1)
+        save_expenses(expenses)
+        print(f"Expense {delete} deleted successfully!\n")
 
 
 def edit_expenses():
@@ -83,13 +86,21 @@ def edit_expenses():
                 print("Invalid number (out of range)! Try again.")
             except ValueError:
                 print("Please enter a valid number. Try again.")
-        
-        new_category = input("Category: ")         
-        new_description = input("Description: ")
+                
+        new_category = input("Category: ").strip()
+        while not new_category:
+            print("Invalid input!")
+            new_category = input("Category: ").strip()
+
+        new_description = input("Description: ").strip()
+        while not new_description:
+            print("Invalid input!")
+            new_description = input("Description: ").strip()
+
         while True:
             try:
-                new_price = int(input("Price: "))
-                if new_price > 0:
+                new_price = float(input("Price: "))
+                if math.isfinite(new_price) and new_price > 0:
                     break
                 print("Price must be positive. Try again.")
             except ValueError:
@@ -106,6 +117,7 @@ def edit_expenses():
         
         
 expenses = load_expenses()
+
 menu = """===== Personal Expense Tracker =====
 1. Add expense
 2. Show expenses
@@ -114,6 +126,7 @@ menu = """===== Personal Expense Tracker =====
 5. Delete expense
 6. Edit expense
 7. Exit"""
+
 while True:
     print(menu)
     try:
@@ -123,13 +136,19 @@ while True:
         continue
     
     if choice == 1:
-        category = (input("Category: "))
-        description = (input("Description: "))
+        category = (input("Category: ")).strip()
+        while not category:
+            print("Invalid input!")
+            category = (input("Category: ")).strip()
         
+        description = (input("Description: ")).strip()
+        while not description:
+            print("Invalid input!")
+            description = (input("Description: ")).strip()
         while True:
             try:
-                price = int(input("Price: "))
-                if price > 0:
+                price = float(input("Price: "))
+                if math.isfinite(price) and price > 0:
                     break
                 print("Price must be positive. Try again.")
             except ValueError:
