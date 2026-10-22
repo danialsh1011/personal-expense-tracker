@@ -115,7 +115,20 @@ def edit_expenses():
         save_expenses(expenses)
         print("Expense edited successfully!\n")
         
+
+def filter_expenses_by_category(category):
+    counter = 0
+    for expense in expenses:
+        if  expense['category'] == category:
+            counter += 1
+            print(f"Expense {counter}")
+            print("----------")
+            print(f"Description: {expense['description']}")
+            print(f"Price: {expense['price']}\n")
+    if counter == 0:
+        print(f"No expenses found for category '{category}'.")
         
+
 expenses = load_expenses()
 
 menu = """===== Personal Expense Tracker =====
@@ -123,9 +136,10 @@ menu = """===== Personal Expense Tracker =====
 2. Show expenses
 3. Show total expenses
 4. Show expenses by category
-5. Delete expense
-6. Edit expense
-7. Exit"""
+5. Filter expenses by category
+6. Delete expense
+7. Edit expense
+8. Exit"""
 
 while True:
     print(menu)
@@ -182,14 +196,21 @@ while True:
             for key, value in categories.items():
                 print(f"{key}: {value}")
             print()
-        
+            
     elif choice == 5:
-        delete_expense()
+        if not expenses:
+            print("No expenses found.\n")
+        else:
+            choose_category = input("Choose your category: ").capitalize().strip()
+            filter_expenses_by_category(choose_category)
 
     elif choice == 6:
+        delete_expense()
+
+    elif choice == 7:
         edit_expenses()
                         
-    elif choice == 7:
+    elif choice == 8:
         print("Goodbye!")
         break
     
