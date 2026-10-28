@@ -20,17 +20,17 @@ def save_expenses(expenses):
         json.dump(expenses, file, indent=4)
         
  
-def show_expenses():
-    if not expenses:
+def show_expenses(filtered_expenses):
+    if not filtered_expenses:
         print("No expenses found.")
         
     else:    
-        for i in range(len(expenses)):
+        for i in range(len(filtered_expenses)):
             print(f"Expense {i + 1}")
             print("----------")
-            print(f"Description: {expenses[i]['description']}")
-            print(f"Category: {expenses[i]['category']}")
-            print(f"Price: {expenses[i]['price']}\n")
+            print(f"Description: {filtered_expenses[i]['description']}")
+            print(f"Category: {filtered_expenses[i]['category']}")
+            print(f"Price: {filtered_expenses[i]['price']}\n")
                 
 
 def calculate_total():
@@ -57,7 +57,7 @@ def delete_expense():
         print("No expenses found.")
         return
     else:
-        show_expenses()
+        show_expenses(expenses)
         while True:
             try:
                 delete = int(input("Choose the expense to delete: "))
@@ -77,7 +77,7 @@ def edit_expenses():
         print("No expenses found.")
         return
     else:
-        show_expenses()
+        show_expenses(expenses)
         while True:
             try:
                 choose_expense = int(input("Choose expense: "))
@@ -117,16 +117,12 @@ def edit_expenses():
         
 
 def filter_expenses_by_category(category):
-    counter = 0
+    filter_category = []
     for expense in expenses:
         if  expense['category'] == category:
-            counter += 1
-            print(f"Expense {counter}")
-            print("----------")
-            print(f"Description: {expense['description']}")
-            print(f"Price: {expense['price']}\n")
-    if counter == 0:
-        print(f"No expenses found for category '{category}'.")
+            filter_category.append(expense)
+    
+    return filter_category
         
 
 expenses = load_expenses()
@@ -178,7 +174,7 @@ while True:
         print("Expense added successfully!\n")
     
     elif choice == 2:
-        show_expenses()
+        show_expenses(expenses)
         
     elif choice == 3:
         if not expenses:
@@ -202,7 +198,8 @@ while True:
             print("No expenses found.\n")
         else:
             choose_category = input("Choose your category: ").capitalize().strip()
-            filter_expenses_by_category(choose_category)
+            filtered_expenses = filter_expenses_by_category(choose_category)
+            show_expenses(filtered_expenses)
 
     elif choice == 6:
         delete_expense()
