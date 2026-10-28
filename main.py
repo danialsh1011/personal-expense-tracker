@@ -33,14 +33,14 @@ def show_expenses(filtered_expenses):
             print(f"Price: {filtered_expenses[i]['price']}\n")
                 
 
-def calculate_total():
+def calculate_total(expenses):
     total = 0
     for dic in expenses:
         total += dic['price']
     return total
 
 
-def show_expenses_by_category():
+def show_expenses_by_category(expenses):
     category_totals = {}
     for dic in expenses:
         if dic['category'] in category_totals:
@@ -181,14 +181,14 @@ while True:
             print("No expenses found.\n")
         
         else:
-            print(f"The total cost is: {calculate_total()}\n")
+            print(f"The total cost is: {calculate_total(expenses)}\n")
         
     elif choice == 4:
         if not expenses:
             print("No expenses found.\n")
         
         else:
-            categories = show_expenses_by_category()         
+            categories = show_expenses_by_category(expenses)         
             for key, value in categories.items():
                 print(f"{key}: {value}")
             print()
