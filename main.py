@@ -116,7 +116,7 @@ def edit_expenses():
         print("Expense edited successfully!\n")
         
 
-def filter_expenses_by_category(category):
+def filter_expenses_by_category(category, expenses):
     filter_category = []
     for expense in expenses:
         if  expense['category'] == category:
@@ -198,7 +198,7 @@ while True:
             print("No expenses found.\n")
         else:
             choose_category = input("Choose your category: ").capitalize().strip()
-            filtered_expenses = filter_expenses_by_category(choose_category)
+            filtered_expenses = filter_expenses_by_category(choose_category, expenses)
             show_expenses(filtered_expenses)
 
     elif choice == 6:
