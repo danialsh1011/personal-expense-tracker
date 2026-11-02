@@ -113,6 +113,10 @@ def edit_expenses():
         expense['price'] = new_price
         expense['category'] = new_category
         expense['description'] = new_description
+        
+        current_date = expense.get('date')
+        new_date = get_expense_date(current_date)
+        expense['date'] = new_date
 
         save_expenses(expenses)
         print("Expense edited successfully!\n")
@@ -127,15 +131,16 @@ def filter_expenses_by_category(category, expenses):
     return filter_category
 
 
-def get_expense_date():
-    today = date.today()
-    today_string = today.strftime("%Y-%m-%d")
+def get_expense_date(current_date=None):
+    if current_date is None:
+        current_date = date.today()
+        current_date = current_date.strftime("%Y-%m-%d")
 
     while True:
-        input_date = input(f"Date (press Enter for {today_string}): ").strip()
+        input_date = input(f"Date (press Enter for {current_date}): ").strip()
 
-        if not input_date:
-            return today_string
+        if input_date == "":
+            return current_date
 
         try:
             datetime.strptime(input_date, "%Y-%m-%d")
@@ -143,6 +148,7 @@ def get_expense_date():
 
         except ValueError:
             print("Invalid date. Please use YYYY-MM-DD.")
+
 
 expenses = load_expenses()
 
@@ -183,12 +189,12 @@ while True:
             except ValueError:
                 print("Please enter a valid number.")
         
-        date = get_expense_date()
+        expense_date = get_expense_date()
                 
         dic = {"price": price,
                "category": category,
                "description": description,
-               "date": date
+               "date": expense_date
                }
         expenses.append(dic)
         save_expenses(expenses)
@@ -224,7 +230,7 @@ while True:
             show_expenses(filtered_expenses)
 
     elif choice == 6:
-        delete_expense()
+        delete_expense(expenses)
 
     elif choice == 7:
         edit_expenses()
