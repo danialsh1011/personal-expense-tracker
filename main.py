@@ -1,5 +1,6 @@
 import json
 import math
+from datetime import date, datetime
 
 def load_expenses():
     try:
@@ -30,7 +31,8 @@ def show_expenses(filtered_expenses):
             print("----------")
             print(f"Description: {filtered_expenses[i]['description']}")
             print(f"Category: {filtered_expenses[i]['category']}")
-            print(f"Price: {filtered_expenses[i]['price']}\n")
+            print(f"Price: {filtered_expenses[i]['price']}")
+            print(f"Date: {filtered_expenses[i].get('date', None)}\n")
                 
 
 def calculate_total(expenses):
@@ -52,7 +54,7 @@ def show_expenses_by_category(expenses):
     return category_totals
 
 
-def delete_expense():
+def delete_expense(expenses):
     if not expenses:
         print("No expenses found.")
         return
@@ -123,7 +125,24 @@ def filter_expenses_by_category(category, expenses):
             filter_category.append(expense)
     
     return filter_category
-        
+
+
+def get_expense_date():
+    today = date.today()
+    today_string = today.strftime("%Y-%m-%d")
+
+    while True:
+        input_date = input(f"Date (press Enter for {today_string}): ").strip()
+
+        if not input_date:
+            return today_string
+
+        try:
+            datetime.strptime(input_date, "%Y-%m-%d")
+            return input_date
+
+        except ValueError:
+            print("Invalid date. Please use YYYY-MM-DD.")
 
 expenses = load_expenses()
 
@@ -163,10 +182,13 @@ while True:
                 print("Price must be positive. Try again.")
             except ValueError:
                 print("Please enter a valid number.")
+        
+        date = get_expense_date()
                 
         dic = {"price": price,
                "category": category,
-               "description": description
+               "description": description,
+               "date": date
                }
         expenses.append(dic)
         save_expenses(expenses)
