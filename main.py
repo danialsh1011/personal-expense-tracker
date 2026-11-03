@@ -32,7 +32,7 @@ def show_expenses(filtered_expenses):
             print(f"Description: {filtered_expenses[i]['description']}")
             print(f"Category: {filtered_expenses[i]['category']}")
             print(f"Price: {filtered_expenses[i]['price']}")
-            print(f"Date: {filtered_expenses[i].get('date', None)}\n")
+            print(f"Date: {filtered_expenses[i].get('date', "Not recorded")}\n")
                 
 
 def calculate_total(expenses):
@@ -74,7 +74,7 @@ def delete_expense(expenses):
         print(f"Expense {delete} deleted successfully!\n")
 
 
-def edit_expenses():
+def edit_expenses(expenses):
     if not expenses:
         print("No expenses found.")
         return
@@ -233,7 +233,7 @@ while True:
         delete_expense(expenses)
 
     elif choice == 7:
-        edit_expenses()
+        edit_expenses(expenses)
                         
     elif choice == 8:
         print("Goodbye!")
