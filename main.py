@@ -21,6 +21,36 @@ def save_expenses(expenses):
         json.dump(expenses, file, indent=4)
         
  
+def add_expense(expenses):
+    category = (input("Category: ")).strip()
+    while not category:
+        print("Invalid input!")
+        category = (input("Category: ")).strip()
+        
+    description = (input("Description: ")).strip()
+    while not description:
+        print("Invalid input!")
+        description = (input("Description: ")).strip()
+    while True:
+        try:
+            price = float(input("Price: "))
+            if math.isfinite(price) and price > 0:
+                break
+            print("Price must be positive. Try again.")
+        except ValueError:
+            print("Please enter a valid number.")
+        
+    expense_date = get_expense_date()
+                
+    expense = {"price": price,
+            "category": category,
+            "description": description,
+            "date": expense_date
+            }
+    expenses.append(expense)
+    save_expenses(expenses)
+ 
+ 
 def show_expenses(filtered_expenses):
     if not filtered_expenses:
         print("No expenses found.")
@@ -171,34 +201,7 @@ while True:
         continue
     
     if choice == 1:
-        category = (input("Category: ")).strip()
-        while not category:
-            print("Invalid input!")
-            category = (input("Category: ")).strip()
-        
-        description = (input("Description: ")).strip()
-        while not description:
-            print("Invalid input!")
-            description = (input("Description: ")).strip()
-        while True:
-            try:
-                price = float(input("Price: "))
-                if math.isfinite(price) and price > 0:
-                    break
-                print("Price must be positive. Try again.")
-            except ValueError:
-                print("Please enter a valid number.")
-        
-        expense_date = get_expense_date()
-                
-        dic = {"price": price,
-               "category": category,
-               "description": description,
-               "date": expense_date
-               }
-        expenses.append(dic)
-        save_expenses(expenses)
-        
+        add_expense(expenses)
         print("Expense added successfully!\n")
     
     elif choice == 2:
