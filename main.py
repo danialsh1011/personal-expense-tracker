@@ -22,10 +22,10 @@ def save_expenses(expenses):
         
  
 def add_expense(expenses):
-    category = (input("Category: ")).strip()
+    category = (input("Category: ")).capitalize().strip()
     while not category:
         print("Invalid input!")
-        category = (input("Category: ")).strip()
+        category = (input("Category: ")).capitalize().strip()
         
     description = (input("Description: ")).strip()
     while not description:
@@ -62,7 +62,7 @@ def show_expenses(filtered_expenses):
             print(f"Description: {filtered_expenses[i]['description']}")
             print(f"Category: {filtered_expenses[i]['category']}")
             print(f"Price: {filtered_expenses[i]['price']}")
-            print(f"Date: {filtered_expenses[i].get('date', "Not recorded")}\n")
+            print(f"Date: {filtered_expenses[i].get('date', 'Not recorded')}\n")
                 
 
 def calculate_total(expenses):
@@ -119,10 +119,10 @@ def edit_expenses(expenses):
             except ValueError:
                 print("Please enter a valid number. Try again.")
                 
-        new_category = input("Category: ").strip()
+        new_category = input("Category: ").capitalize().strip()
         while not new_category:
             print("Invalid input!")
-            new_category = input("Category: ").strip()
+            new_category = input("Category: ").capitalize().strip()
 
         new_description = input("Description: ").strip()
         while not new_description:
