@@ -67,8 +67,8 @@ def show_expenses(filtered_expenses):
 
 def calculate_total(expenses):
     total = 0
-    for dic in expenses:
-        total += dic['price']
+    for expense in expenses:
+        total += expense['price']
     return total
 
 
@@ -173,9 +173,10 @@ def get_expense_date(current_date=None):
             print("Invalid date. Please use YYYY-MM-DD.")
 
 
-expenses = load_expenses()
+def main():
+    expenses = load_expenses()
 
-menu = """===== Personal Expense Tracker =====
+    menu = """===== Personal Expense Tracker =====
 1. Add expense
 2. Show expenses
 3. Show total expenses
@@ -185,55 +186,59 @@ menu = """===== Personal Expense Tracker =====
 7. Edit expense
 8. Exit"""
 
-while True:
-    print(menu)
-    try:
-        choice = int(input("Choose an option:"))
-    except ValueError:
-        print("Please enter a valid number.")
-        continue
-    
-    if choice == 1:
-        add_expense(expenses)
-        print("Expense added successfully!\n")
-    
-    elif choice == 2:
-        show_expenses(expenses)
+    while True:
+        print(menu)
+        try:
+            choice = int(input("Choose an option:"))
+        except ValueError:
+            print("Please enter a valid number.")
+            continue
         
-    elif choice == 3:
-        if not expenses:
-            print("No expenses found.\n")
+        if choice == 1:
+            add_expense(expenses)
+            print("Expense added successfully!\n")
+
+        elif choice == 2:
+            show_expenses(expenses)
+
+        elif choice == 3:
+            if not expenses:
+                print("No expenses found.\n")
+
+            else:
+                print(f"The total cost is: {calculate_total(expenses)}\n")
+
+        elif choice == 4:
+            if not expenses:
+                print("No expenses found.\n")
+
+            else:
+                categories = show_expenses_by_category(expenses)         
+                for key, value in categories.items():
+                    print(f"{key}: {value}")
+                print()
+
+        elif choice == 5:
+            if not expenses:
+                print("No expenses found.\n")
+            else:
+                choose_category = input("Choose your category: ").capitalize().strip()
+                filtered_expenses = filter_expenses_by_category(choose_category, expenses)
+                show_expenses(filtered_expenses)
+
+        elif choice == 6:
+            delete_expense(expenses)
+
+        elif choice == 7:
+            edit_expenses(expenses)
+
+        elif choice == 8:
+            print("Goodbye!")
+            break
         
         else:
-            print(f"The total cost is: {calculate_total(expenses)}\n")
-        
-    elif choice == 4:
-        if not expenses:
-            print("No expenses found.\n")
-        
-        else:
-            categories = show_expenses_by_category(expenses)         
-            for key, value in categories.items():
-                print(f"{key}: {value}")
-            print()
+            print("Invalid option!")
             
-    elif choice == 5:
-        if not expenses:
-            print("No expenses found.\n")
-        else:
-            choose_category = input("Choose your category: ").capitalize().strip()
-            filtered_expenses = filter_expenses_by_category(choose_category, expenses)
-            show_expenses(filtered_expenses)
-
-    elif choice == 6:
-        delete_expense(expenses)
-
-    elif choice == 7:
-        edit_expenses(expenses)
-                        
-    elif choice == 8:
-        print("Goodbye!")
-        break
-    
-    else:
-        print("Invalid option!")
+            
+if __name__ == "__main__":
+    main()
