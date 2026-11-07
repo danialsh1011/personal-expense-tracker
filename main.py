@@ -56,13 +56,13 @@ def show_expenses(filtered_expenses):
         print("No expenses found.")
         
     else:    
-        for i in range(len(filtered_expenses)):
-            print(f"Expense {i + 1}")
+        for index, expense in enumerate(filtered_expenses, start=1):
+            print(f"Expense {index}")
             print("----------")
-            print(f"Description: {filtered_expenses[i]['description']}")
-            print(f"Category: {filtered_expenses[i]['category']}")
-            print(f"Price: {filtered_expenses[i]['price']}")
-            print(f"Date: {filtered_expenses[i].get('date', 'Not recorded')}\n")
+            print(f"Description: {expense['description']}")
+            print(f"Category: {expense['category']}")
+            print(f"Price: {expense['price']}")
+            print(f"Date: {expense.get('date', 'Not recorded')}\n")
                 
 
 def calculate_total(expenses):
@@ -153,11 +153,7 @@ def edit_expenses(expenses):
         
 
 def filter_expenses_by_category(category, expenses):
-    filter_category = []
-    for expense in expenses:
-        if  expense['category'] == category:
-            filter_category.append(expense)
-    
+    filter_category = [expense for expense in expenses if expense['category'] == category]
     return filter_category
 
 
