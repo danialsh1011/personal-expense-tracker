@@ -74,13 +74,10 @@ def calculate_total(expenses):
 
 def show_expenses_by_category(expenses):
     category_totals = {}
-    for dic in expenses:
-        if dic['category'] in category_totals:
-            category_totals[dic['category']] += dic['price']
-                            
-        else:
-            category_totals[dic['category']] = dic['price']
-    
+    for expense in expenses:
+        category = expense['category']
+        category_totals[category] = category_totals.get(category, 0) + expense['price']
+        
     return category_totals
 
 
