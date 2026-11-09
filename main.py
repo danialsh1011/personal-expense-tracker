@@ -7,26 +7,26 @@ def load_expenses():
         with open("expenses.json", "r") as file:
             expenses = json.load(file)
         return expenses
-    
+
     except json.decoder.JSONDecodeError:
         return []
-    
+
     except FileNotFoundError:
         return []
-    
+
 
 
 def save_expenses(expenses):
     with open("expenses.json", "w") as file:
         json.dump(expenses, file, indent=4)
-        
- 
+
+
 def add_expense(expenses):
     category = (input("Category: ")).capitalize().strip()
     while not category:
         print("Invalid input!")
         category = (input("Category: ")).capitalize().strip()
-        
+
     description = (input("Description: ")).strip()
     while not description:
         print("Invalid input!")
@@ -39,9 +39,9 @@ def add_expense(expenses):
             print("Price must be positive. Try again.")
         except ValueError:
             print("Please enter a valid number.")
-        
+
     expense_date = get_expense_date()
-                
+
     expense = {"price": price,
             "category": category,
             "description": description,
@@ -49,13 +49,13 @@ def add_expense(expenses):
             }
     expenses.append(expense)
     save_expenses(expenses)
- 
- 
+
+
 def show_expenses(filtered_expenses):
     if not filtered_expenses:
         print("No expenses found.")
-        
-    else:    
+
+    else:
         for index, expense in enumerate(filtered_expenses, start=1):
             print(f"Expense {index}")
             print("----------")
@@ -63,7 +63,7 @@ def show_expenses(filtered_expenses):
             print(f"Category: {expense['category']}")
             print(f"Price: {expense['price']}")
             print(f"Date: {expense.get('date', 'Not recorded')}\n")
-                
+
 
 def calculate_total(expenses):
     total = 0
@@ -77,7 +77,7 @@ def show_expenses_by_category(expenses):
     for expense in expenses:
         category = expense['category']
         category_totals[category] = category_totals.get(category, 0) + expense['price']
-        
+
     return category_totals
 
 
@@ -115,7 +115,7 @@ def edit_expenses(expenses):
                 print("Invalid number (out of range)! Try again.")
             except ValueError:
                 print("Please enter a valid number. Try again.")
-                
+
         new_category = input("Category: ").capitalize().strip()
         while not new_category:
             print("Invalid input!")
@@ -134,20 +134,20 @@ def edit_expenses(expenses):
                 print("Price must be positive. Try again.")
             except ValueError:
                 print("Please enter a valid number.")
-            
+
         expense = expenses[choose_expense - 1]
 
         expense['price'] = new_price
         expense['category'] = new_category
         expense['description'] = new_description
-        
+
         current_date = expense.get('date')
         new_date = get_expense_date(current_date)
         expense['date'] = new_date
 
         save_expenses(expenses)
         print("Expense edited successfully!\n")
-        
+
 
 def filter_expenses_by_category(category, expenses):
     filter_category = [expense for expense in expenses if expense['category'] == category]
@@ -193,7 +193,7 @@ def main():
         except ValueError:
             print("Please enter a valid number.")
             continue
-        
+
         if choice == 1:
             add_expense(expenses)
             print("Expense added successfully!\n")
@@ -213,7 +213,7 @@ def main():
                 print("No expenses found.\n")
 
             else:
-                categories = show_expenses_by_category(expenses)         
+                categories = show_expenses_by_category(expenses)
                 for key, value in categories.items():
                     print(f"{key}: {value}")
                 print()
@@ -235,10 +235,10 @@ def main():
         elif choice == 8:
             print("Goodbye!")
             break
-        
+
         else:
             print("Invalid option!")
-            
-            
+
+
 if __name__ == "__main__":
     main()
