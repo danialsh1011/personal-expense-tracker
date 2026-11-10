@@ -4,6 +4,7 @@ from main import (
     filter_expenses_by_category
 )
 
+
 class TestCalculateTotal(unittest.TestCase):
 
     def test_calculate_total(self):
@@ -14,8 +15,9 @@ class TestCalculateTotal(unittest.TestCase):
         ]
 
         result = calculate_total(expenses)
+        expected = 350
 
-        self.assertEqual(result, 350)
+        self.assertEqual(result, expected)
 
 
     def test_single_expense(self):
@@ -24,16 +26,18 @@ class TestCalculateTotal(unittest.TestCase):
         ]
 
         result = calculate_total(expenses)
+        expected = 500
 
-        self.assertEqual(result, 500)
+        self.assertEqual(result, expected)
 
 
     def test_empty_expenses(self):
         expenses = []
 
         result =calculate_total(expenses)
+        expected = 0
 
-        self.assertEqual(result, 0)
+        self.assertEqual(result, expected)
 
 
     def test_float_expenses(self):
@@ -43,8 +47,10 @@ class TestCalculateTotal(unittest.TestCase):
         ]
 
         result = calculate_total(expenses)
+        expected = 31
 
-        self.assertEqual(result, 31)
+        self.assertEqual(result, expected)
+
 
     def test_with_zero_expenses(self):
         expenses = [
@@ -53,11 +59,13 @@ class TestCalculateTotal(unittest.TestCase):
         ]
 
         result = calculate_total(expenses)
+        expected = 100
 
-        self.assertEqual(result, 100)
+        self.assertEqual(result, expected)
 
 
 class TestFilterExpensesByCategory(unittest.TestCase):
+    
     def test_filter_food_expenses(self):
         expenses = [
             {'category': "food"},
