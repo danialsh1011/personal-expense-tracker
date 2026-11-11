@@ -1,7 +1,9 @@
 import unittest
+from unittest.mock import patch, mock_open
 from main import (
     calculate_total,
-    filter_expenses_by_category
+    filter_expenses_by_category,
+    load_expenses
 )
 
 
@@ -137,6 +139,36 @@ class TestFilterExpensesByCategory(unittest.TestCase):
 
         self.assertEqual(result, expected)
 
+
+class TestLoadExpenses(unittest.TestCase):
+    def test_file_not_found(self):
+        with patch("main.open", side_effect= FileNotFoundError):
+            result = load_expenses()
+        expected = []
+        
+        self.assertEqual(result, expected)
+
+    
+    def test_load_valid_json(self):
+        mock_file = mock_open(read_data='[{"price": 1, "category": "test", "description": "test"}]')
+        
+        with patch("main.open", new=mock_file):
+            result = load_expenses()
+            
+        expected = [{'price': 1, 'category': "test", 'description': "test"}]
+        
+        self.assertEqual(result, expected)
+        
+        
+    def test_invalid_json(self):
+        mock_file = mock_open(read_data='{"price": 100')
+
+        with patch("main.open", new=mock_file):
+            result = load_expenses()
+
+        expected = []
+
+        self.assertEqual(result, expected)
 
 if __name__ == "__main__":  
     unittest.main()
