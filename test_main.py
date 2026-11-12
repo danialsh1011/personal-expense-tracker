@@ -3,7 +3,8 @@ from unittest.mock import patch, mock_open
 from main import (
     calculate_total,
     filter_expenses_by_category,
-    load_expenses
+    load_expenses,
+    save_expenses
 )
 
 
@@ -169,6 +170,41 @@ class TestLoadExpenses(unittest.TestCase):
         expected = []
 
         self.assertEqual(result, expected)
+
+
+class TestSaveExpenses(unittest.TestCase):
+    
+    def test_save_expenses(self):
+        mock_file = mock_open()
+        expenses = [{"price": 1, "category": "test", "description": "test"}]
+        
+        with patch("main.open", new=mock_file):
+            save_expenses(expenses)
+            
+        mock_file.assert_called_once_with("expenses.json", "w")
+
+    
+    def test_json_dump_called(self):
+        mock_file = mock_open()
+        expenses = [{"price": 1, "category": "test", "description": "test"}]
+    
+        with patch("main.open", new=mock_file):
+            with patch("main.json.dump") as mock_dump:
+                save_expenses(expenses)
+    
+        mock_dump.assert_called_once_with(expenses, mock_file(), indent=4)
+        
+        
+    def test_save_empty_expenses(self):
+        mock_file = mock_open()
+        expenses = []
+    
+        with patch("main.open", new=mock_file):
+            with patch("main.json.dump") as mock_dump:
+                save_expenses(expenses)
+    
+        mock_dump.assert_called_once_with(expenses, mock_file(), indent=4)
+        
 
 if __name__ == "__main__":  
     unittest.main()
