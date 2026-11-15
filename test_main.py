@@ -4,7 +4,8 @@ from main import (
     calculate_total,
     filter_expenses_by_category,
     load_expenses,
-    save_expenses
+    save_expenses,
+    delete_expense
 )
 
 
@@ -205,6 +206,88 @@ class TestSaveExpenses(unittest.TestCase):
     
         mock_dump.assert_called_once_with(expenses, mock_file(), indent=4)
         
+        
+class TestDeleteExpense(unittest.TestCase):
+    def test_delete_empty_expense(self):
+        expenses = []
+        
+        with patch("builtins.print") as mock_print:
+            with patch("builtins.input") as mock_input:
+                delete_expense(expenses)
+        
+        mock_print.assert_called_once_with("No expenses found.")
+        mock_input.assert_not_called()
+        
+        
+    def test_delete_expense(self):
+        expenses = [
+            {"price": 100, "category": "food", "description": "lunch"},
+            {"price": 200, "category": "taxi", "description": "university"},
+            {"price": 300, "category": "books", "description": "python"}
+        ]
+        
+        expected = [
+            {"price": 100, "category": "food", "description": "lunch"},
+            {"price": 300, "category": "books", "description": "python"}
+        ]
+        
+        with patch("builtins.input", return_value="2"):
+            with patch("main.save_expenses") as mock_save:
+                with patch("builtins.print") as mock_print:
+                    delete_expense(expenses)
+            
+            
+        mock_save.assert_called_once_with(expenses)
+        mock_print.assert_any_call("Expense 2 deleted successfully!\n")
+        self.assertEqual(expenses, expected)
+        
+        
+    def test_delete_invalid_number(self):
+        expenses = [
+            {"price": 100, "category": "food", "description": "lunch"},
+            {"price": 200, "category": "taxi", "description": "university"},
+            {"price": 300, "category": "books", "description": "python"}
+        ]
+ 
+        expected = [
+            {"price": 100, "category": "food", "description": "lunch"},
+            {"price": 300, "category": "books", "description": "python"}
+        ]
+               
+        with patch("builtins.input", side_effect=['5', '2']):
+            with patch("main.save_expenses") as mock_save:
+                with patch("builtins.print") as mock_print:
+                    delete_expense(expenses)
+                
+        mock_print.assert_any_call("Invalid number.")
+        mock_save.assert_called_once_with(expenses)
+        mock_print.assert_any_call("Expense 2 deleted successfully!\n")
+        self.assertEqual(expenses, expected)       
+        
+        
+    def test_delete_invalid_input(self):
+        expenses = [
+            {"price": 100, "category": "food", "description": "lunch"},
+            {"price": 200, "category": "taxi", "description": "university"},
+            {"price": 300, "category": "books", "description": "python"}
+        ]
+        
 
+        expected = [
+            {"price": 100, "category": "food", "description": "lunch"},
+            {"price": 300, "category": "books", "description": "python"}
+        ]
+                
+        with patch("builtins.input", side_effect=["a", '2']):
+            with patch("main.save_expenses") as mock_save:
+                with patch("builtins.print") as mock_print:
+                    delete_expense(expenses)
+                
+        mock_print.assert_any_call("Please enter a valid number.")
+        mock_save.assert_called_once_with(expenses)
+        mock_print.assert_any_call("Expense 2 deleted successfully!\n")
+        self.assertEqual(expenses, expected)
+    
+    
 if __name__ == "__main__":  
     unittest.main()
