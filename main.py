@@ -116,15 +116,15 @@ def edit_expenses(expenses):
             except ValueError:
                 print("Please enter a valid number. Try again.")
 
-        new_category = input("Category: ").capitalize().strip()
+        new_category = input("Category: ").strip().capitalize()
         while not new_category:
             print("Invalid input!")
-            new_category = input("Category: ").capitalize().strip()
+            new_category = input("Category: ").strip().capitalize()
 
-        new_description = input("Description: ").strip()
+        new_description = input("Description: ").strip().capitalize()
         while not new_description:
             print("Invalid input!")
-            new_description = input("Description: ").strip()
+            new_description = input("Description: ").strip().capitalize()
 
         while True:
             try:
