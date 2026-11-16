@@ -22,15 +22,15 @@ def save_expenses(expenses):
 
 
 def add_expense(expenses):
-    category = (input("Category: ")).capitalize().strip()
+    category = (input("Category: ")).strip().capitalize()
     while not category:
         print("Invalid input!")
-        category = (input("Category: ")).capitalize().strip()
+        category = (input("Category: ")).strip().capitalize()
 
-    description = (input("Description: ")).strip()
+    description = (input("Description: ")).strip().capitalize()
     while not description:
         print("Invalid input!")
-        description = (input("Description: ")).strip()
+        description = (input("Description: ")).strip().capitalize()
     while True:
         try:
             price = float(input("Price: "))
