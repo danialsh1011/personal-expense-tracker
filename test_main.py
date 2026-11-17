@@ -5,7 +5,8 @@ from main import (
     filter_expenses_by_category,
     load_expenses,
     save_expenses,
-    delete_expense
+    delete_expense,
+    edit_expenses
 )
 
 
@@ -208,6 +209,7 @@ class TestSaveExpenses(unittest.TestCase):
         
         
 class TestDeleteExpense(unittest.TestCase):
+    
     def test_delete_empty_expense(self):
         expenses = []
         
@@ -287,7 +289,221 @@ class TestDeleteExpense(unittest.TestCase):
         mock_save.assert_called_once_with(expenses)
         mock_print.assert_any_call("Expense 2 deleted successfully!\n")
         self.assertEqual(expenses, expected)
+        
+        
+class TestEditExpense(unittest.TestCase):
+    
+    def test_edit_empty_expenses(self):
+        expenses = []
+        
+        with patch("builtins.print") as mock_print:
+            with patch("builtins.input") as mock_input:
+                edit_expenses(expenses)
+        
+        mock_print.assert_called_once_with("No expenses found.")
+        mock_input.assert_not_called()
+        
+        
+    def test_edit_expenses(self):
+        expenses = [ {"price": 100, "category": "food", "description": "lunch"} ]
+        
+        expected = [ {"price": 250, "category": "Book", "description": "Python course", "date": "2026-11-16"}]
+        
+        with patch("builtins.input", side_effect=["1", "book", "python course", "250.0"]):
+            with patch("main.get_expense_date", return_value="2026-11-16"):
+                with patch("main.save_expenses") as mock_save:
+                    with patch("builtins.print") as mock_print:
+                        edit_expenses(expenses)
+        
+        mock_save.assert_called_once_with(expenses)
+        mock_print.assert_any_call("Expense edited successfully!\n")
+        self.assertEqual(expenses, expected)
+        
+        
+    def test_edit_invalid_number_input(self):
+        expenses = [ {"price": 100, "category": "food", "description": "lunch"} ]
+        
+        expected = [ {"price": 250, "category": "Book", "description": "Python course", "date": "2026-11-16"}]
+        
+        with patch("builtins.input", side_effect=["2" ,"1", "book", "python course", "250.0"]):
+            with patch("main.get_expense_date", return_value="2026-11-16"):
+                with patch("main.save_expenses") as mock_save:
+                    with patch("builtins.print") as mock_print:
+                        edit_expenses(expenses)
+        
+        mock_print.assert_any_call("Invalid number (out of range)! Try again.")
+        mock_save.assert_called_once_with(expenses)
+        mock_print.assert_any_call("Expense edited successfully!\n")
+        self.assertEqual(expenses, expected)
+        
+        
+    def test_edit_invalid_string_input(self):
+        expenses = [ {"price": 100, "category": "food", "description": "lunch"} ]
+        
+        expected = [ {"price": 250, "category": "Book", "description": "Python course", "date": "2026-11-16"}]
+        
+        with patch("builtins.input", side_effect=["a" ,"1", "book", "python course", "250.0"]):
+            with patch("main.get_expense_date", return_value="2026-11-16"):
+                with patch("main.save_expenses") as mock_save:
+                    with patch("builtins.print") as mock_print:
+                        edit_expenses(expenses)
+        
+        mock_print.assert_any_call("Please enter a valid number. Try again.")
+        mock_save.assert_called_once_with(expenses)
+        mock_print.assert_any_call("Expense edited successfully!\n")
+        self.assertEqual(expenses, expected)
+        
+        
+    def test_edit_empty_input_category(self):
+        expenses = [ {"price": 100, "category": "food", "description": "lunch"} ]
+        
+        expected = [ {"price": 250, "category": "Book", "description": "Python course", "date": "2026-11-16"}]
+        
+        with patch("builtins.input", side_effect=["1", "", "book", "python course", "250.0"]):
+            with patch("main.get_expense_date", return_value="2026-11-16"):
+                with patch("main.save_expenses") as mock_save:
+                    with patch("builtins.print") as mock_print:
+                        edit_expenses(expenses)
+        
+        mock_print.assert_any_call("Invalid input!")
+        mock_save.assert_called_once_with(expenses)
+        mock_print.assert_any_call("Expense edited successfully!\n")
+        self.assertEqual(expenses, expected)
+        
+    def test_edit_empty_input_description(self):
+        expenses = [ {"price": 100, "category": "food", "description": "lunch"} ]
+        
+        expected = [ {"price": 250, "category": "Book", "description": "Python course", "date": "2026-11-16"}]
+        
+        with patch("builtins.input", side_effect=["1", "book", "", "python course", "250.0"]):
+            with patch("main.get_expense_date", return_value="2026-11-16"):
+                with patch("main.save_expenses") as mock_save:
+                    with patch("builtins.print") as mock_print:
+                        edit_expenses(expenses)
+        
+        mock_print.assert_any_call("Invalid input!")
+        mock_save.assert_called_once_with(expenses)
+        mock_print.assert_any_call("Expense edited successfully!\n")
+        self.assertEqual(expenses, expected)
+        
+        
+    def test_edit_invalid_price_input(self):
+        expenses = [ {"price": 100, "category": "food", "description": "lunch"} ]
+    
+        expected = [ {"price": 250, "category": "Book", "description": "Python course", "date": "2026-11-16"}]
+        
+        with patch("builtins.input", side_effect=["1", "book", "python course", "a", "250.0"]):
+            with patch("main.get_expense_date", return_value="2026-11-16"):
+                with patch("main.save_expenses") as mock_save:
+                    with patch("builtins.print") as mock_print:
+                        edit_expenses(expenses)
+                        
+        mock_print.assert_any_call("Please enter a valid number.")
+        mock_save.assert_called_once_with(expenses)
+        mock_print.assert_any_call("Expense edited successfully!\n")
+        self.assertEqual(expenses, expected)
     
     
+    def test_edit_non_positive_price(self):
+        expenses = [ {"price": 100, "category": "food", "description": "lunch"} ]
+    
+        expected = [ {"price": 250, "category": "Book", "description": "Python course", "date": "2026-11-16"}]
+        
+        with patch("builtins.input", side_effect=["1", "book", "python course", "-100", "250.0"]):
+            with patch("main.get_expense_date", return_value="2026-11-16"):
+                with patch("main.save_expenses") as mock_save:
+                    with patch("builtins.print") as mock_print:
+                        edit_expenses(expenses)
+                        
+        mock_print.assert_any_call("Price must be positive. Try again.")
+        mock_save.assert_called_once_with(expenses)
+        mock_print.assert_any_call("Expense edited successfully!\n")
+        self.assertEqual(expenses, expected)
+        
+        
+    def test_edit_zero_price(self):
+        expenses = [ {"price": 100, "category": "food", "description": "lunch"} ]
+    
+        expected = [ {"price": 250, "category": "Book", "description": "Python course", "date": "2026-11-16"}]
+        
+        with patch("builtins.input", side_effect=["1", "book", "python course", "0", "250.0"]):
+            with patch("main.get_expense_date", return_value="2026-11-16"):
+                with patch("main.save_expenses") as mock_save:
+                    with patch("builtins.print") as mock_print:
+                        edit_expenses(expenses)
+                        
+        mock_print.assert_any_call("Price must be positive. Try again.")
+        mock_save.assert_called_once_with(expenses)
+        mock_print.assert_any_call("Expense edited successfully!\n")
+        self.assertEqual(expenses, expected)
+        
+        
+    def test_edit_infinite_price(self):
+        expenses = [ {"price": 100, "category": "food", "description": "lunch"} ]
+    
+        expected = [ {"price": 250, "category": "Book", "description": "Python course", "date": "2026-11-16"}]
+        
+        with patch("builtins.input", side_effect=["1", "book", "python course", "inf", "250.0"]):
+            with patch("main.get_expense_date", return_value="2026-11-16"):
+                with patch("main.save_expenses") as mock_save:
+                    with patch("builtins.print") as mock_print:
+                        edit_expenses(expenses)
+                        
+        mock_print.assert_any_call("Price must be positive. Try again.")
+        mock_save.assert_called_once_with(expenses)
+        mock_print.assert_any_call("Expense edited successfully!\n")
+        self.assertEqual(expenses, expected)
+        
+        
+    def test_edit_nan_price(self):
+        expenses = [ {"price": 100, "category": "food", "description": "lunch"} ]
+    
+        expected = [ {"price": 250, "category": "Book", "description": "Python course", "date": "2026-11-16"}]
+        
+        with patch("builtins.input", side_effect=["1", "book", "python course", "nan", "250.0"]):
+            with patch("main.get_expense_date", return_value="2026-11-16"):
+                with patch("main.save_expenses") as mock_save:
+                    with patch("builtins.print") as mock_print:
+                        edit_expenses(expenses)
+                        
+        mock_print.assert_any_call("Price must be positive. Try again.")
+        mock_save.assert_called_once_with(expenses)
+        mock_print.assert_any_call("Expense edited successfully!\n")
+        self.assertEqual(expenses, expected)
+        
+        
+    def test_edit_date(self):
+        expenses = [ {"price": 100, "category": "food", "description": "lunch", "date": "2026-11-15"} ]
+        
+        expected = [ {"price": 250, "category": "Book", "description": "Python course", "date": "2026-11-16"}]
+        
+        with patch("builtins.input", side_effect=["1", "book", "python course", "250.0"]):
+            with patch("main.get_expense_date", return_value="2026-11-16") as mock_date:
+                with patch("main.save_expenses") as mock_save:
+                    with patch("builtins.print") as mock_print:
+                        edit_expenses(expenses)
+                        
+        mock_date.assert_called_once_with("2026-11-15")
+        mock_save.assert_called_once_with(expenses)
+        mock_print.assert_any_call("Expense edited successfully!\n")
+        self.assertEqual(expenses, expected)
+        
+        
+    def test_edit_invalid_date(self):
+        expenses = [ {"price": 100, "category": "food", "description": "lunch", "date": "2026-11-15"} ]
+        
+        expected = [ {"price": 250, "category": "Book", "description": "Python course", "date": "2026-11-16"}]
+        
+        with patch("builtins.input", side_effect=["1", "book", "python course", "250.0", "a", "2026-11-16"]):
+            with patch("main.save_expenses") as mock_save:
+                with patch("builtins.print") as mock_print:
+                    edit_expenses(expenses)
+                        
+        mock_print.assert_any_call("Invalid date. Please use YYYY-MM-DD.")
+        mock_save.assert_called_once_with(expenses)
+        mock_print.assert_any_call("Expense edited successfully!\n")
+        self.assertEqual(expenses, expected)
+        
+
 if __name__ == "__main__":  
     unittest.main()
