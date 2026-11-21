@@ -4,21 +4,22 @@ from datetime import date, datetime
 
 def load_expenses():
     try:
-        with open("expenses.json", "r") as file:
+        with open("expenses.json", "r", encoding="utf-8") as file:
             expenses = json.load(file)
+        
+        if not isinstance(expenses, list):
+            return []
+        
         return expenses
-
-    except json.decoder.JSONDecodeError:
-        return []
-
-    except FileNotFoundError:
+    
+    except (json.decoder.JSONDecodeError, FileNotFoundError):
         return []
 
 
 
 def save_expenses(expenses):
-    with open("expenses.json", "w") as file:
-        json.dump(expenses, file, indent=4)
+    with open("expenses.json", "w", encoding="utf-8") as file:
+        json.dump(expenses, file, indent=4, ensure_ascii=False)
 
 
 def add_expense(expenses):
