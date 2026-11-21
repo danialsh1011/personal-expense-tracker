@@ -172,6 +172,15 @@ class TestLoadExpenses(unittest.TestCase):
         expected = []
 
         self.assertEqual(result, expected)
+        
+        
+    def test_json_object_instead_of_list(self):
+        mock_file = mock_open(read_data='{"price": 100}')
+
+        with patch("main.open", new=mock_file):
+            result = load_expenses()
+
+        self.assertEqual(result, [])
 
 
 class TestSaveExpenses(unittest.TestCase):
