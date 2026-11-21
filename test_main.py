@@ -192,7 +192,7 @@ class TestSaveExpenses(unittest.TestCase):
         with patch("main.open", new=mock_file):
             save_expenses(expenses)
             
-        mock_file.assert_called_once_with("expenses.json", "w")
+        mock_file.assert_called_once_with("expenses.json", "w", encoding="utf-8")
 
     
     def test_json_dump_called(self):
@@ -203,7 +203,7 @@ class TestSaveExpenses(unittest.TestCase):
             with patch("main.json.dump") as mock_dump:
                 save_expenses(expenses)
     
-        mock_dump.assert_called_once_with(expenses, mock_file(), indent=4)
+        mock_dump.assert_called_once_with(expenses, mock_file(), indent=4, ensure_ascii=False)
         
         
     def test_save_empty_expenses(self):
@@ -214,7 +214,7 @@ class TestSaveExpenses(unittest.TestCase):
             with patch("main.json.dump") as mock_dump:
                 save_expenses(expenses)
     
-        mock_dump.assert_called_once_with(expenses, mock_file(), indent=4)
+        mock_dump.assert_called_once_with(expenses, mock_file(), indent=4, ensure_ascii=False)
         
         
 class TestDeleteExpense(unittest.TestCase):
