@@ -52,12 +52,12 @@ def add_expense(expenses):
     save_expenses(expenses)
 
 
-def show_expenses(filtered_expenses):
-    if not filtered_expenses:
+def show_expenses(expenses):
+    if not expenses:
         print("No expenses found.")
 
     else:
-        for index, expense in enumerate(filtered_expenses, start=1):
+        for index, expense in enumerate(expenses, start=1):
             print(f"Expense {index}")
             print("----------")
             print(f"Description: {expense['description']}")
