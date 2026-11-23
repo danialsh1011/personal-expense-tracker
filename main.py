@@ -67,10 +67,7 @@ def show_expenses(expenses):
 
 
 def calculate_total(expenses):
-    total = 0
-    for expense in expenses:
-        total += expense['price']
-    return total
+    return sum(expense['price'] for expense in expenses)
 
 
 def show_expenses_by_category(expenses):
