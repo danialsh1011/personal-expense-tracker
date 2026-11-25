@@ -94,9 +94,21 @@ def delete_expense(expenses):
                     print("Invalid number.")
             except ValueError:
                 print("Please enter a valid number.")
-        expenses.pop(delete - 1)
-        save_expenses(expenses)
-        print(f"Expense {delete} deleted successfully!\n")
+        while True:
+            confirmation = input("Are you sure you want to delete this expense? (y/n): ").strip().lower()
+
+            if confirmation == 'y':
+                expenses.pop(delete - 1)
+                save_expenses(expenses)
+                print(f"Expense {delete} deleted successfully!\n")
+                break
+
+            elif confirmation == 'n':
+                print("Deletion cancelled.")
+                break
+
+            else:
+                print("Please enter 'y' or 'n'.")
 
 
 def edit_expenses(expenses):
