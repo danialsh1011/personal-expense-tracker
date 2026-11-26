@@ -242,7 +242,7 @@ class TestDeleteExpense(unittest.TestCase):
             {"price": 300, "category": "books", "description": "python"}
         ]
         
-        with patch("builtins.input", return_value="2"):
+        with patch("builtins.input", side_effect=['2', 'y']):
             with patch("main.save_expenses") as mock_save:
                 with patch("builtins.print") as mock_print:
                     delete_expense(expenses)
@@ -265,7 +265,7 @@ class TestDeleteExpense(unittest.TestCase):
             {"price": 300, "category": "books", "description": "python"}
         ]
                
-        with patch("builtins.input", side_effect=['5', '2']):
+        with patch("builtins.input", side_effect=['5', '2', 'y']):
             with patch("main.save_expenses") as mock_save:
                 with patch("builtins.print") as mock_print:
                     delete_expense(expenses)
@@ -289,7 +289,7 @@ class TestDeleteExpense(unittest.TestCase):
             {"price": 300, "category": "books", "description": "python"}
         ]
                 
-        with patch("builtins.input", side_effect=["a", '2']):
+        with patch("builtins.input", side_effect=['a', '2', 'y']):
             with patch("main.save_expenses") as mock_save:
                 with patch("builtins.print") as mock_print:
                     delete_expense(expenses)
