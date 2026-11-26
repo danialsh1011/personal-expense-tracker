@@ -62,9 +62,7 @@ def test_with_zero_expenses():
 
     assert result == expected
 
-
-class TestFilterExpensesByCategory(unittest.TestCase):
-    
+class TestFilterExpensesByCategory:
     def test_filter_food_expenses(self):
         expenses = [
             {'category': "food"},
@@ -79,18 +77,18 @@ class TestFilterExpensesByCategory(unittest.TestCase):
             {'category': "food"}
         ]
 
-        self.assertEqual(result, expected)
+        assert result == expected
 
 
     def test_expenses_empty(self):
         expenses = []
-        
+
         result = filter_expenses_by_category("", expenses)
         expected = []
-        
-        self.assertEqual(result, expected)
 
-    
+        assert result == expected
+
+
     def test_invalid_category(self):
         expenses = [
             {'category': "food"},
@@ -98,13 +96,13 @@ class TestFilterExpensesByCategory(unittest.TestCase):
             {'category': "test"},
             {'category': "education"}
         ]
-        
+
         result = filter_expenses_by_category("book", expenses)
         expected = []
-        
-        self.assertEqual(result, expected)
-        
-        
+
+        assert result == expected
+
+
     def test_all_expenses_same_category(self):
         expenses = [
             {'category': "food"},
@@ -112,7 +110,7 @@ class TestFilterExpensesByCategory(unittest.TestCase):
             {'category': "food"},
             {'category': "food"}
         ]
-        
+
         result = filter_expenses_by_category("food", expenses)
         expected = [
             {'category': "food"},
@@ -120,8 +118,8 @@ class TestFilterExpensesByCategory(unittest.TestCase):
             {'category': "food"},
             {'category': "food"}
         ]
-        
-        self.assertEqual(result, expected)
+
+        assert result == expected
 
 
     def test_one_category(self):
@@ -134,7 +132,7 @@ class TestFilterExpensesByCategory(unittest.TestCase):
         result = filter_expenses_by_category("food", expenses)
         expected = [{'category': "food"}]
 
-        self.assertEqual(result, expected)
+        assert result == expected
 
 
 class TestLoadExpenses(unittest.TestCase):
