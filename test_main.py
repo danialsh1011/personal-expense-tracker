@@ -10,57 +10,57 @@ from main import (
 )
 
 
+class TestCalculateTotal:
+    def test_calculate_total(self):
+        expenses = [
+            {"price": 100},
+            {"price": 200},
+            {"price": 50}
+        ]
+        result = calculate_total(expenses)
+        expected = 350
+        assert result == expected
 
 
-def test_calculate_total():
-    expenses = [
-        {"price": 100},
-        {"price": 200},
-        {"price": 50}
-    ]
-    result = calculate_total(expenses)
-    expected = 350
-    assert result == expected
+    def test_single_expense(self):
+        expenses = [
+            {"price": 500}
+        ]
+        result = calculate_total(expenses)
+        expected = 500
+
+        assert result == expected
 
 
-def test_single_expense():
-    expenses = [
-        {"price": 500}
-    ]
-    result = calculate_total(expenses)
-    expected = 500
+    def test_empty_expenses(self):
+        expenses = []
+        result = calculate_total(expenses)
+        expected = 0
 
-    assert result == expected
+        assert result == expected
 
 
-def test_empty_expenses():
-    expenses = []
-    result =calculate_total(expenses)
-    expected = 0
+    def test_float_expenses(self):
+        expenses = [
+            {"price": 10.5},
+            {"price": 20.5}
+        ]
+        result = calculate_total(expenses)
+        expected = 31
 
-    assert result == expected
-
-
-def test_float_expenses():
-    expenses = [
-        {"price": 10.5},
-        {"price": 20.5}
-    ]
-    result = calculate_total(expenses)
-    expected = 31
-
-    assert result == expected
+        assert result == expected
 
 
-def test_with_zero_expenses():
-    expenses = [
-        {"price": 0},
-        {"price": 100}
-    ]
-    result = calculate_total(expenses)
-    expected = 100
+    def test_with_zero_expenses(self):
+        expenses = [
+            {"price": 0},
+            {"price": 100}
+        ]
+        result = calculate_total(expenses)
+        expected = 100
 
-    assert result == expected
+        assert result == expected
+
 
 class TestFilterExpensesByCategory:
     def test_filter_food_expenses(self):
