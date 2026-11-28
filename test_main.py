@@ -294,7 +294,7 @@ class TestDeleteExpense:
         assert expenses == expected
         
         
-class TestEditExpense(unittest.TestCase):
+class TestEditExpense:
     
     def test_edit_empty_expenses(self):
         expenses = []
@@ -320,7 +320,7 @@ class TestEditExpense(unittest.TestCase):
         
         mock_save.assert_called_once_with(expenses)
         mock_print.assert_any_call("Expense edited successfully!\n")
-        self.assertEqual(expenses, expected)
+        assert expenses == expected
         
         
     def test_edit_invalid_number_input(self):
@@ -337,7 +337,7 @@ class TestEditExpense(unittest.TestCase):
         mock_print.assert_any_call("Invalid number (out of range)! Try again.")
         mock_save.assert_called_once_with(expenses)
         mock_print.assert_any_call("Expense edited successfully!\n")
-        self.assertEqual(expenses, expected)
+        assert expenses == expected
         
         
     def test_edit_invalid_string_input(self):
@@ -354,7 +354,7 @@ class TestEditExpense(unittest.TestCase):
         mock_print.assert_any_call("Please enter a valid number. Try again.")
         mock_save.assert_called_once_with(expenses)
         mock_print.assert_any_call("Expense edited successfully!\n")
-        self.assertEqual(expenses, expected)
+        assert expenses == expected
         
         
     def test_edit_empty_input_category(self):
@@ -371,7 +371,7 @@ class TestEditExpense(unittest.TestCase):
         mock_print.assert_any_call("Invalid input!")
         mock_save.assert_called_once_with(expenses)
         mock_print.assert_any_call("Expense edited successfully!\n")
-        self.assertEqual(expenses, expected)
+        assert expenses == expected
         
     def test_edit_empty_input_description(self):
         expenses = [ {"price": 100, "category": "food", "description": "lunch"} ]
@@ -387,7 +387,7 @@ class TestEditExpense(unittest.TestCase):
         mock_print.assert_any_call("Invalid input!")
         mock_save.assert_called_once_with(expenses)
         mock_print.assert_any_call("Expense edited successfully!\n")
-        self.assertEqual(expenses, expected)
+        assert expenses == expected
         
         
     def test_edit_invalid_price_input(self):
@@ -404,7 +404,7 @@ class TestEditExpense(unittest.TestCase):
         mock_print.assert_any_call("Please enter a valid number.")
         mock_save.assert_called_once_with(expenses)
         mock_print.assert_any_call("Expense edited successfully!\n")
-        self.assertEqual(expenses, expected)
+        assert expenses == expected
     
     
     def test_edit_non_positive_price(self):
@@ -421,7 +421,7 @@ class TestEditExpense(unittest.TestCase):
         mock_print.assert_any_call("Price must be positive. Try again.")
         mock_save.assert_called_once_with(expenses)
         mock_print.assert_any_call("Expense edited successfully!\n")
-        self.assertEqual(expenses, expected)
+        assert expenses == expected
         
         
     def test_edit_zero_price(self):
@@ -438,7 +438,7 @@ class TestEditExpense(unittest.TestCase):
         mock_print.assert_any_call("Price must be positive. Try again.")
         mock_save.assert_called_once_with(expenses)
         mock_print.assert_any_call("Expense edited successfully!\n")
-        self.assertEqual(expenses, expected)
+        assert expenses == expected
         
         
     def test_edit_infinite_price(self):
@@ -455,7 +455,7 @@ class TestEditExpense(unittest.TestCase):
         mock_print.assert_any_call("Price must be positive. Try again.")
         mock_save.assert_called_once_with(expenses)
         mock_print.assert_any_call("Expense edited successfully!\n")
-        self.assertEqual(expenses, expected)
+        assert expenses == expected
         
         
     def test_edit_nan_price(self):
@@ -472,7 +472,7 @@ class TestEditExpense(unittest.TestCase):
         mock_print.assert_any_call("Price must be positive. Try again.")
         mock_save.assert_called_once_with(expenses)
         mock_print.assert_any_call("Expense edited successfully!\n")
-        self.assertEqual(expenses, expected)
+        assert expenses == expected
         
         
     def test_edit_date(self):
@@ -489,7 +489,7 @@ class TestEditExpense(unittest.TestCase):
         mock_date.assert_called_once_with("2026-11-15")
         mock_save.assert_called_once_with(expenses)
         mock_print.assert_any_call("Expense edited successfully!\n")
-        self.assertEqual(expenses, expected)
+        assert expenses == expected
         
         
     def test_edit_invalid_date(self):
@@ -505,7 +505,7 @@ class TestEditExpense(unittest.TestCase):
         mock_print.assert_any_call("Invalid date. Please use YYYY-MM-DD.")
         mock_save.assert_called_once_with(expenses)
         mock_print.assert_any_call("Expense edited successfully!\n")
-        self.assertEqual(expenses, expected)
+        assert expenses == expected
         
 
 if __name__ == "__main__":  
