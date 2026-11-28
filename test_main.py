@@ -177,7 +177,7 @@ class TestLoadExpenses:
         assert result == excepted
 
 
-class TestSaveExpenses(unittest.TestCase):
+class TestSaveExpenses:
     
     def test_save_expenses(self):
         mock_file = mock_open()
