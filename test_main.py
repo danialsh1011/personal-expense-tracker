@@ -1,4 +1,3 @@
-import unittest
 from unittest.mock import patch, mock_open
 from main import (
     calculate_total,
@@ -10,39 +9,34 @@ from main import (
 )
 
 
-class TestCalculateTotal(unittest.TestCase):
-
+class TestCalculateTotal:
     def test_calculate_total(self):
         expenses = [
             {"price": 100},
             {"price": 200},
             {"price": 50}
         ]
-
         result = calculate_total(expenses)
         expected = 350
-
-        self.assertEqual(result, expected)
+        assert result == expected
 
 
     def test_single_expense(self):
         expenses = [
             {"price": 500}
         ]
-
         result = calculate_total(expenses)
         expected = 500
 
-        self.assertEqual(result, expected)
+        assert result == expected
 
 
     def test_empty_expenses(self):
         expenses = []
-
-        result =calculate_total(expenses)
+        result = calculate_total(expenses)
         expected = 0
 
-        self.assertEqual(result, expected)
+        assert result == expected
 
 
     def test_float_expenses(self):
@@ -50,11 +44,10 @@ class TestCalculateTotal(unittest.TestCase):
             {"price": 10.5},
             {"price": 20.5}
         ]
-
         result = calculate_total(expenses)
         expected = 31
 
-        self.assertEqual(result, expected)
+        assert result == expected
 
 
     def test_with_zero_expenses(self):
@@ -62,15 +55,13 @@ class TestCalculateTotal(unittest.TestCase):
             {"price": 0},
             {"price": 100}
         ]
-
         result = calculate_total(expenses)
         expected = 100
 
-        self.assertEqual(result, expected)
+        assert result == expected
 
 
-class TestFilterExpensesByCategory(unittest.TestCase):
-    
+class TestFilterExpensesByCategory:
     def test_filter_food_expenses(self):
         expenses = [
             {'category': "food"},
@@ -85,18 +76,18 @@ class TestFilterExpensesByCategory(unittest.TestCase):
             {'category': "food"}
         ]
 
-        self.assertEqual(result, expected)
+        assert result == expected
 
 
     def test_expenses_empty(self):
         expenses = []
-        
+
         result = filter_expenses_by_category("", expenses)
         expected = []
-        
-        self.assertEqual(result, expected)
 
-    
+        assert result == expected
+
+
     def test_invalid_category(self):
         expenses = [
             {'category': "food"},
@@ -104,13 +95,13 @@ class TestFilterExpensesByCategory(unittest.TestCase):
             {'category': "test"},
             {'category': "education"}
         ]
-        
+
         result = filter_expenses_by_category("book", expenses)
         expected = []
-        
-        self.assertEqual(result, expected)
-        
-        
+
+        assert result == expected
+
+
     def test_all_expenses_same_category(self):
         expenses = [
             {'category': "food"},
@@ -118,7 +109,7 @@ class TestFilterExpensesByCategory(unittest.TestCase):
             {'category': "food"},
             {'category': "food"}
         ]
-        
+
         result = filter_expenses_by_category("food", expenses)
         expected = [
             {'category': "food"},
@@ -126,8 +117,8 @@ class TestFilterExpensesByCategory(unittest.TestCase):
             {'category': "food"},
             {'category': "food"}
         ]
-        
-        self.assertEqual(result, expected)
+
+        assert result == expected
 
 
     def test_one_category(self):
@@ -140,16 +131,16 @@ class TestFilterExpensesByCategory(unittest.TestCase):
         result = filter_expenses_by_category("food", expenses)
         expected = [{'category': "food"}]
 
-        self.assertEqual(result, expected)
+        assert result == expected
 
 
-class TestLoadExpenses(unittest.TestCase):
+class TestLoadExpenses:
     def test_file_not_found(self):
         with patch("main.open", side_effect= FileNotFoundError):
             result = load_expenses()
         expected = []
         
-        self.assertEqual(result, expected)
+        assert result == expected
 
     
     def test_load_valid_json(self):
@@ -160,7 +151,7 @@ class TestLoadExpenses(unittest.TestCase):
             
         expected = [{'price': 1, 'category': "test", 'description': "test"}]
         
-        self.assertEqual(result, expected)
+        assert result == expected
         
         
     def test_invalid_json(self):
@@ -171,7 +162,7 @@ class TestLoadExpenses(unittest.TestCase):
 
         expected = []
 
-        self.assertEqual(result, expected)
+        assert result == expected
         
         
     def test_json_object_instead_of_list(self):
@@ -179,11 +170,13 @@ class TestLoadExpenses(unittest.TestCase):
 
         with patch("main.open", new=mock_file):
             result = load_expenses()
+            
+        expected = []
 
-        self.assertEqual(result, [])
+        assert result == expected
 
 
-class TestSaveExpenses(unittest.TestCase):
+class TestSaveExpenses:
     
     def test_save_expenses(self):
         mock_file = mock_open()
@@ -217,7 +210,7 @@ class TestSaveExpenses(unittest.TestCase):
         mock_dump.assert_called_once_with(expenses, mock_file(), indent=4, ensure_ascii=False)
         
         
-class TestDeleteExpense(unittest.TestCase):
+class TestDeleteExpense:
     
     def test_delete_empty_expense(self):
         expenses = []
@@ -250,7 +243,7 @@ class TestDeleteExpense(unittest.TestCase):
             
         mock_save.assert_called_once_with(expenses)
         mock_print.assert_any_call("Expense 2 deleted successfully!\n")
-        self.assertEqual(expenses, expected)
+        assert expenses == expected
         
         
     def test_delete_invalid_number(self):
@@ -273,7 +266,7 @@ class TestDeleteExpense(unittest.TestCase):
         mock_print.assert_any_call("Invalid number.")
         mock_save.assert_called_once_with(expenses)
         mock_print.assert_any_call("Expense 2 deleted successfully!\n")
-        self.assertEqual(expenses, expected)       
+        assert expenses == expected       
         
         
     def test_delete_invalid_input(self):
@@ -297,10 +290,10 @@ class TestDeleteExpense(unittest.TestCase):
         mock_print.assert_any_call("Please enter a valid number.")
         mock_save.assert_called_once_with(expenses)
         mock_print.assert_any_call("Expense 2 deleted successfully!\n")
-        self.assertEqual(expenses, expected)
+        assert expenses == expected
         
         
-class TestEditExpense(unittest.TestCase):
+class TestEditExpense:
     
     def test_edit_empty_expenses(self):
         expenses = []
@@ -326,7 +319,7 @@ class TestEditExpense(unittest.TestCase):
         
         mock_save.assert_called_once_with(expenses)
         mock_print.assert_any_call("Expense edited successfully!\n")
-        self.assertEqual(expenses, expected)
+        assert expenses == expected
         
         
     def test_edit_invalid_number_input(self):
@@ -343,7 +336,7 @@ class TestEditExpense(unittest.TestCase):
         mock_print.assert_any_call("Invalid number (out of range)! Try again.")
         mock_save.assert_called_once_with(expenses)
         mock_print.assert_any_call("Expense edited successfully!\n")
-        self.assertEqual(expenses, expected)
+        assert expenses == expected
         
         
     def test_edit_invalid_string_input(self):
@@ -360,7 +353,7 @@ class TestEditExpense(unittest.TestCase):
         mock_print.assert_any_call("Please enter a valid number. Try again.")
         mock_save.assert_called_once_with(expenses)
         mock_print.assert_any_call("Expense edited successfully!\n")
-        self.assertEqual(expenses, expected)
+        assert expenses == expected
         
         
     def test_edit_empty_input_category(self):
@@ -377,7 +370,7 @@ class TestEditExpense(unittest.TestCase):
         mock_print.assert_any_call("Invalid input!")
         mock_save.assert_called_once_with(expenses)
         mock_print.assert_any_call("Expense edited successfully!\n")
-        self.assertEqual(expenses, expected)
+        assert expenses == expected
         
     def test_edit_empty_input_description(self):
         expenses = [ {"price": 100, "category": "food", "description": "lunch"} ]
@@ -393,7 +386,7 @@ class TestEditExpense(unittest.TestCase):
         mock_print.assert_any_call("Invalid input!")
         mock_save.assert_called_once_with(expenses)
         mock_print.assert_any_call("Expense edited successfully!\n")
-        self.assertEqual(expenses, expected)
+        assert expenses == expected
         
         
     def test_edit_invalid_price_input(self):
@@ -410,7 +403,7 @@ class TestEditExpense(unittest.TestCase):
         mock_print.assert_any_call("Please enter a valid number.")
         mock_save.assert_called_once_with(expenses)
         mock_print.assert_any_call("Expense edited successfully!\n")
-        self.assertEqual(expenses, expected)
+        assert expenses == expected
     
     
     def test_edit_non_positive_price(self):
@@ -427,7 +420,7 @@ class TestEditExpense(unittest.TestCase):
         mock_print.assert_any_call("Price must be positive. Try again.")
         mock_save.assert_called_once_with(expenses)
         mock_print.assert_any_call("Expense edited successfully!\n")
-        self.assertEqual(expenses, expected)
+        assert expenses == expected
         
         
     def test_edit_zero_price(self):
@@ -444,7 +437,7 @@ class TestEditExpense(unittest.TestCase):
         mock_print.assert_any_call("Price must be positive. Try again.")
         mock_save.assert_called_once_with(expenses)
         mock_print.assert_any_call("Expense edited successfully!\n")
-        self.assertEqual(expenses, expected)
+        assert expenses == expected
         
         
     def test_edit_infinite_price(self):
@@ -461,7 +454,7 @@ class TestEditExpense(unittest.TestCase):
         mock_print.assert_any_call("Price must be positive. Try again.")
         mock_save.assert_called_once_with(expenses)
         mock_print.assert_any_call("Expense edited successfully!\n")
-        self.assertEqual(expenses, expected)
+        assert expenses == expected
         
         
     def test_edit_nan_price(self):
@@ -478,7 +471,7 @@ class TestEditExpense(unittest.TestCase):
         mock_print.assert_any_call("Price must be positive. Try again.")
         mock_save.assert_called_once_with(expenses)
         mock_print.assert_any_call("Expense edited successfully!\n")
-        self.assertEqual(expenses, expected)
+        assert expenses == expected
         
         
     def test_edit_date(self):
@@ -495,7 +488,7 @@ class TestEditExpense(unittest.TestCase):
         mock_date.assert_called_once_with("2026-11-15")
         mock_save.assert_called_once_with(expenses)
         mock_print.assert_any_call("Expense edited successfully!\n")
-        self.assertEqual(expenses, expected)
+        assert expenses == expected
         
         
     def test_edit_invalid_date(self):
@@ -511,8 +504,4 @@ class TestEditExpense(unittest.TestCase):
         mock_print.assert_any_call("Invalid date. Please use YYYY-MM-DD.")
         mock_save.assert_called_once_with(expenses)
         mock_print.assert_any_call("Expense edited successfully!\n")
-        self.assertEqual(expenses, expected)
-        
-
-if __name__ == "__main__":  
-    unittest.main()
+        assert expenses == expected
