@@ -135,13 +135,13 @@ class TestFilterExpensesByCategory:
         assert result == expected
 
 
-class TestLoadExpenses(unittest.TestCase):
+class TestLoadExpenses:
     def test_file_not_found(self):
         with patch("main.open", side_effect= FileNotFoundError):
             result = load_expenses()
         expected = []
         
-        self.assertEqual(result, expected)
+        assert result == expected
 
     
     def test_load_valid_json(self):
@@ -152,7 +152,7 @@ class TestLoadExpenses(unittest.TestCase):
             
         expected = [{'price': 1, 'category': "test", 'description': "test"}]
         
-        self.assertEqual(result, expected)
+        assert result == expected
         
         
     def test_invalid_json(self):
@@ -163,7 +163,7 @@ class TestLoadExpenses(unittest.TestCase):
 
         expected = []
 
-        self.assertEqual(result, expected)
+        assert result == expected
         
         
     def test_json_object_instead_of_list(self):
@@ -171,8 +171,10 @@ class TestLoadExpenses(unittest.TestCase):
 
         with patch("main.open", new=mock_file):
             result = load_expenses()
+            
+        excepted = []
 
-        self.assertEqual(result, [])
+        assert result == excepted
 
 
 class TestSaveExpenses(unittest.TestCase):
