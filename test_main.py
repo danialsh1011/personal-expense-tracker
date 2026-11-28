@@ -1,4 +1,3 @@
-import unittest
 from unittest.mock import patch, mock_open
 from main import (
     calculate_total,
@@ -172,9 +171,9 @@ class TestLoadExpenses:
         with patch("main.open", new=mock_file):
             result = load_expenses()
             
-        excepted = []
+        expected = []
 
-        assert result == excepted
+        assert result == expected
 
 
 class TestSaveExpenses:
@@ -506,7 +505,3 @@ class TestEditExpense:
         mock_save.assert_called_once_with(expenses)
         mock_print.assert_any_call("Expense edited successfully!\n")
         assert expenses == expected
-        
-
-if __name__ == "__main__":  
-    unittest.main()
