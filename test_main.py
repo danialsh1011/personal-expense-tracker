@@ -211,7 +211,7 @@ class TestSaveExpenses:
         mock_dump.assert_called_once_with(expenses, mock_file(), indent=4, ensure_ascii=False)
         
         
-class TestDeleteExpense(unittest.TestCase):
+class TestDeleteExpense:
     
     def test_delete_empty_expense(self):
         expenses = []
@@ -244,7 +244,7 @@ class TestDeleteExpense(unittest.TestCase):
             
         mock_save.assert_called_once_with(expenses)
         mock_print.assert_any_call("Expense 2 deleted successfully!\n")
-        self.assertEqual(expenses, expected)
+        assert expenses == expected
         
         
     def test_delete_invalid_number(self):
@@ -267,7 +267,7 @@ class TestDeleteExpense(unittest.TestCase):
         mock_print.assert_any_call("Invalid number.")
         mock_save.assert_called_once_with(expenses)
         mock_print.assert_any_call("Expense 2 deleted successfully!\n")
-        self.assertEqual(expenses, expected)       
+        assert expenses == expected       
         
         
     def test_delete_invalid_input(self):
@@ -291,7 +291,7 @@ class TestDeleteExpense(unittest.TestCase):
         mock_print.assert_any_call("Please enter a valid number.")
         mock_save.assert_called_once_with(expenses)
         mock_print.assert_any_call("Expense 2 deleted successfully!\n")
-        self.assertEqual(expenses, expected)
+        assert expenses == expected
         
         
 class TestEditExpense(unittest.TestCase):
